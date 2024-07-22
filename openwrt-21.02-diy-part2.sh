@@ -11,47 +11,47 @@
 #
 
 # Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.1.1/g' package/base-files/files/bin/config_generate
 
-#git clone --single-branch -b openwrt-21.02 https://github.com/openwrt/openwrt
+git clone --single-branch -b openwrt-23.05 https://github.com/openwrt/openwrt
 
 #移除不用软件包    
-#rm -rf feeds/packages/libs/libgd-full
-#rm -rf feeds/luci/collections/luci-lib-docker
-#rm -rf package/network
-#rm -rf feeds/luci/themes/luci-theme-argon
-#rm -rf package/libs/mbedtls
-#rm -rf feeds/packages/net/kcptun
-#rm -rf feeds/packages/net/xray-core
-#rm -rf feeds/packages/devel/ninja
-#rm -rf package/libs/elfutils
-#rm -rf package/libs/libcap
-#rm -rf package/libs/libnftnl
-#rm -rf package/libs/libpcap
-#rm -rf package/libs/nettle
-#rm -rf package/libs/pcre
-#rm -f tools/Makefile
-#rm -f feeds/packages/net/dnsproxy/Makefile
-#rm -rf feeds/packages/net/trojan-go
+rm -rf feeds/packages/libs/libgd-full
+rm -rf feeds/luci/collections/luci-lib-docker
+rm -rf package/network
+rm -rf feeds/luci/themes/luci-theme-argon
+rm -rf package/libs/mbedtls
+rm -rf feeds/packages/net/kcptun
+rm -rf feeds/packages/net/xray-core
+rm -rf feeds/packages/devel/ninja
+rm -rf package/libs/elfutils
+rm -rf package/libs/libcap
+rm -rf package/libs/libnftnl
+rm -rf package/libs/libpcap
+rm -rf package/libs/nettle
+rm -rf package/libs/pcre
+rm -f tools/Makefile
+rm -f feeds/packages/net/dnsproxy/Makefile
+rm -rf feeds/packages/net/trojan-go
 
 # Prepare
 
 # Irqbalance
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
 # Victoria's Secret
-#rm -rf ./scripts/download.pl
-#rm -rf ./include/download.mk
-#wget -P scripts/ https://github.com/immortalwrt/immortalwrt/raw/master/scripts/download.pl
-#wget -P include/ https://github.com/immortalwrt/immortalwrt/raw/master/include/download.mk
-#wget -P feeds/packages/net/dnsproxy https://raw.githubusercontent.com/coolsnowwolf/packages/master/net/dnsproxy/Makefile
+rm -rf ./scripts/download.pl
+rm -rf ./include/download.mk
+wget -P scripts/ https://github.com/immortalwrt/immortalwrt/raw/master/scripts/download.pl
+wget -P include/ https://github.com/immortalwrt/immortalwrt/raw/master/include/download.mk
+wget -P feeds/packages/net/dnsproxy https://raw.githubusercontent.com/coolsnowwolf/packages/master/net/dnsproxy/Makefile
 
 # Important Patches
 # ARM64: Add CPU model name in proc cpuinfo
-#wget -P target/linux/generic/pending-5.15 https://github.com/immortalwrt/immortalwrt/raw/master/target/linux/generic/hack-5.15/312-arm64-cpuinfo-Add-model-name-in-proc-cpuinfo-for-64bit-ta.patch
-#wget -P target/linux/generic/pending-5.10 https://github.com/immortalwrt/immortalwrt/raw/master/target/linux/generic/hack-5.10/312-arm64-cpuinfo-Add-model-name-in-proc-cpuinfo-for-64bit-ta.patch
+wget -P target/linux/generic/pending-5.15 https://github.com/immortalwrt/immortalwrt/raw/master/target/linux/generic/hack-5.15/312-arm64-cpuinfo-Add-model-name-in-proc-cpuinfo-for-64bit-ta.patch
+wget -P target/linux/generic/pending-5.10 https://github.com/immortalwrt/immortalwrt/raw/master/target/linux/generic/hack-5.10/312-arm64-cpuinfo-Add-model-name-in-proc-cpuinfo-for-64bit-ta.patch
 
 # Patch jsonc
-#patch -p1 < $GITHUB_WORKSPACE/PATCH/new/package/use_json_object_new_int64.patch
+patch -p1 < $GITHUB_WORKSPACE/PATCH/new/package/use_json_object_new_int64.patch
 
 # Patch kernel to fix fullcone conflict
 pushd target/linux/generic/hack-5.15
@@ -59,29 +59,29 @@ wget https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/gen
 popd
 wget -P target/linux/generic/hack-5.10 https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/hack-5.15/952-net-conntrack-events-support-multiple-registrant.patch
 # Patch firewall to enable fullcone
-#mkdir package/network/config/firewall/patches
-#wget -P package/network/config/firewall/patches/ https://github.com/immortalwrt/immortalwrt/raw/ster/package/network/config/firewall/patches/fullconenat.patch
+mkdir package/network/config/firewall/patches
+wget -P package/network/config/firewall/patches/ https://github.com/immortalwrt/immortalwrt/raw/ster/package/network/config/firewall/patches/fullconenat.patch
 # Patch LuCI to add fullcone button
-#patch -p1 < $GITHUB_WORKSPACE/PATCH/new/package/luci-app-firewall_add_fullcone.patch
+patch -p1 < $GITHUB_WORKSPACE/PATCH/new/package/luci-app-firewall_add_fullcone.patch
 # FullCone modules
-#cp -rf $GITHUB_WORKSPACE/PATCH/duplicate/fullconenat ./package/network/fullconenat
+cp -rf $GITHUB_WORKSPACE/PATCH/duplicate/fullconenat ./package/network/fullconenat
 
 #添加额外软件包
-#svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-21.02/package/libs/mbedtls package/libs/mbedtls
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/mbedtls package/libs/mbedtls
-#svn co https://github.com/coolsnowwolf/packages/trunk/devel/ninja feeds/packages/devel/ninja
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-mount package/lean/ntfs3-mount
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-oot package/lean/ntfs3-oot
-#svn co https://github.com/breakings/OpenWrt/trunk/general/ntfs3 package/lean/ntfs3
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/elfutils package/libs/elfutils
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libcap package/libs/libcap
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libnftnl package/libs/libnftnl
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libpcap package/libs/libpcap
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/nettle package/libs/nettle
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/pcre package/libs/pcre
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx tools/upx
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl tools/ucl
-#wget -P tools https://raw.githubusercontent.com/breakings/OpenWrt/main/general/tools/Makefile
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-21.02/package/libs/mbedtls package/libs/mbedtls
+svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/mbedtls package/libs/mbedtls
+svn co https://github.com/coolsnowwolf/packages/trunk/devel/ninja feeds/packages/devel/ninja
+svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-mount package/lean/ntfs3-mount
+svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-oot package/lean/ntfs3-oot
+svn co https://github.com/breakings/OpenWrt/trunk/general/ntfs3 package/lean/ntfs3
+svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/elfutils package/libs/elfutils
+svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libcap package/libs/libcap
+svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libnftnl package/libs/libnftnl
+svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libpcap package/libs/libpcap
+svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/nettle package/libs/nettle
+svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/pcre package/libs/pcre
+svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx tools/upx
+svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl tools/ucl
+wget -P tools https://raw.githubusercontent.com/breakings/OpenWrt/main/general/tools/Makefile
 
 # Extra Packages
 # AutoCore
@@ -89,12 +89,12 @@ wget -P target/linux/generic/hack-5.10 https://raw.githubusercontent.com/coolsno
 cp -rf $GITHUB_WORKSPACE/general/autocore package/autocore
 #svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/autocore package/lean/autocore
 #rm -rf ./feeds/packages/utils/coremark
-#svn co https://github.com/immortalwrt/packages/trunk/utils/coremark feeds/packages/utils/coremark
-#svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-21.02/package/lean/qt5 package/lean/qt5
-#svn co https://github.com/immortalwrt/packages/branches/openwrt-21.02/libs/libdouble-conversion package/libs/libdouble-conversion
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libdouble-conversion package/libs/libdouble-conversion
-#svn co https://github.com/Lienol/openwrt/branches/21.02/package/lean/qt5 package/lean/qt5
-#svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/qt5 package/lean/qt5
+svn co https://github.com/immortalwrt/packages/trunk/utils/coremark feeds/packages/utils/coremark
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-21.02/package/lean/qt5 package/lean/qt5
+svn co https://github.com/immortalwrt/packages/branches/openwrt-21.02/libs/libdouble-conversion package/libs/libdouble-conversion
+svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libdouble-conversion package/libs/libdouble-conversion
+svn co https://github.com/Lienol/openwrt/branches/21.02/package/lean/qt5 package/lean/qt5
+svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/qt5 package/lean/qt5
 cp -rf $GITHUB_WORKSPACE/general/qtbase package/qtbase
 cp -rf $GITHUB_WORKSPACE/general/qttools package/qttools
 #svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/shortcut-fe package/lean/shortcut-fe
@@ -114,7 +114,7 @@ popd
 
 #菜单定制
 #git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic package/luci-app-unblockneteasemusic
-#svn co https://github.com/Lienol/openwrt/branches/21.02/package/network package/network
+svn co https://github.com/Lienol/openwrt/branches/21.02/package/network package/network
 #svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-21.02/package/lean/qBittorrent-Enhanced-Edition package/lean/qBittorrent-Enhanced-Edition
 #svn co https://github.com/coolsnowwolf/packages/trunk/net/qBittorrent package/lean/qBittorrent
 #svn co https://github.com/coolsnowwolf/packages/trunk/libs/rblibtorrent package/lean/rblibtorrent
