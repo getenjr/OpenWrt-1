@@ -538,7 +538,7 @@ rm -rf feeds/packages/net/sing-box
 cp -rf $GITHUB_WORKSPACE/general/sing-box feeds/packages/net/sing-box
 
 # Optimization level -Ofast
-if [ "$platform" = "x86_64" ]; then
+if [ "$platform" = "armsr/armv8" ]; then
     curl -s https://raw.githubusercontent.com/sbwml/r4s_build_script/master/openwrt/patch/target-modify_for_x86_64.patch | patch -p1
 fi
 
@@ -550,7 +550,7 @@ rm -rf feeds/packages/libs/libpfring
 cp -rf $GITHUB_WORKSPACE/general/libpfring feeds/packages/libs/libpfring
 
 # bash
-if [ "$platform" = "x86_64" ]; then
+if [ "$platform" = "armsr/amrv8" ]; then
 sed -i 's#ash#bash#g' package/base-files/files/etc/passwd
 fi
 sed -i 's#\\u@\\h:\\w\\\$#\\[\\e[32;1m\\][\\u@\\h\\[\\e[0m\\] \\[\\033[01;34m\\]\\W\\[\\033[00m\\]\\[\\e[32;1m\\]]\\[\\e[0m\\]\\\$#g' package/base-files/files/etc/profile
