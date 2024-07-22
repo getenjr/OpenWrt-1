@@ -11,12 +11,12 @@
 #
 
 # Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.1.1/g' package/base-files/files/bin/config_generate
 
 #移除不用软件包    
 rm -rf feeds/packages/libs/libgd-full
 rm -rf feeds/luci/collections/luci-lib-docker
-#rm -rf package/network
+rm -rf package/network
 rm -rf package/libs/mbedtls
 rm -rf feeds/luci/themes/luci-theme-argon
 #rm -rf feeds/luci/themes/luci-theme-openwrt-2020
@@ -29,7 +29,7 @@ rm -rf feeds/luci/modules/luci-mod-dashboard
 rm -rf feeds/packages/net/kcptun
 
 # Important Patches
-svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-21.02/package/libs/mbedtls package/libs/mbedtls
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-23.05/package/libs/mbedtls package/libs/mbedtls
 # ARM64: Add CPU model name in proc cpuinfo
 wget -P target/linux/generic/pending-5.4 https://github.com/immortalwrt/immortalwrt/raw/master/target/linux/generic/hack-5.4/312-arm64-cpuinfo-Add-model-name-in-proc-cpuinfo-for-64bit-ta.patch
 
